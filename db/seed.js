@@ -1,11 +1,24 @@
-const { client, getAllUsers } = require("./index");
-
+const { client, getAllUsers, createUser } = require("./index");
+const users = require("../Database");
 async function dropTables() {
   try {
     console.log("starting to drop tables....");
     await client.query(`DROP TABLE IF EXISTS users;`);
   } catch (error) {
     console.error("Error dropping tables!");
+    throw error;
+  }
+}
+
+async function createInitialUsers() {
+  try {
+    console.log(users, "users");
+    for (const user of users) {
+      await createUser(user);
+    }
+    console.log("finished creating users");
+  } catch (error) {
+    console.error("Error creating users!");
     throw error;
   }
 }
@@ -35,6 +48,7 @@ async function rebuildDB() {
 
     await dropTables();
     await createTables();
+    await createInitialUsers();
   } catch (error) {
     throw error;
     //   } finally {
@@ -51,7 +65,7 @@ async function testDB() {
     const users = await getAllUsers();
     // for now, logging is a fine way to see what's up
     console.log(users, "getAllUsers");
-    console.log("finished database test")
+    console.log("finished database test");
   } catch (error) {
     console.error("error testing database");
     throw error;
