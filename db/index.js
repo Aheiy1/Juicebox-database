@@ -8,16 +8,20 @@ async function getAllUsers() {
   return rows;
 }
 
-async function createUser({ username, password }) {
+async function createUser({ username, password,name,
+  location}) {
   try {
     console.log(username, password, "users and password");
     const { rows } = await client.query(
       `
-      INSERT INTO users(username, password) VALUES ($1, $2)
-      ON CONFLICT (username) DO NOTHING
-      RETURNING * ;
+      INSERT INTO users(username, password,name,
+        location) 
+        VALUES ($1, $2, $3, $4)
+        ON CONFLICT (username) DO NOTHING
+        RETURNING * ;
       `,
-      [username, password]
+      [username, password,name,
+        location]
     );
     return rows;
   } catch (error) {
