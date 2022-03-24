@@ -1,10 +1,21 @@
-const { client, getAllUsers, createUser, updateUser } = require("./index");
+const {
+  client,
+  getAllUsers,
+  createUser,
+  updateUser,
+  createPost,
+  updatePost,
+  getAllPosts,
+  getPostsByUser,
+  getUserById,
+} = require("./index");
 const users = require("../Database");
 
 async function dropTables() {
   try {
     console.log("starting to drop tables....");
-    await client.query(`DROP TABLE IF EXISTS users;`);
+    await client.query(`DROP TABLE IF EXISTS posts;
+    DROP TABLE IF EXISTS users;`);
   } catch (error) {
     console.error("Error dropping tables!");
     throw error;
@@ -24,6 +35,22 @@ async function createInitialUsers() {
   }
 }
 
+async function createInitialPosts() {
+  try {
+    const [albert, sandra, glamgal] = await getAllUsers();
+
+    await createPost({
+      authorId: albert.id,
+      title: "First Post",
+      content: "This is my first post. I hope I love writing blogs as much as I love writing them."
+    });
+
+    // a couple more
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function createTables() {
   try {
     console.log("Starting to build tables...");
@@ -38,6 +65,13 @@ async function createTables() {
     active BOOLEAN DEFAULT true
     
     );
+    CREATE TABLE posts(
+      id SERIAL PRIMARY KEY,
+      "authorId" INTEGER REFERENCES users(id) NOT NULL,
+      title VARCHAR(255) NOT NULL,
+      content TEXT NOT NULL,
+      active BOOLEAN DEFAULT true
+      );
     `);
     console.log("Finished building tables!");
   } catch (error) {
@@ -53,6 +87,7 @@ async function rebuildDB() {
     await dropTables();
     await createTables();
     await createInitialUsers();
+    await createInitialPosts();
   } catch (error) {
     throw error;
     //   } finally {
@@ -60,30 +95,41 @@ async function rebuildDB() {
     //   }
   }
 }
+
 async function testDB() {
   try {
-    // connect the client to the database, finally
     console.log("Starting to test database...");
 
-    // queries are promises, so we can await them
+    console.log("Calling getAllUsers");
     const users = await getAllUsers();
-    // for now, logging is a fine way to see what's up
-    console.log(users, "getAllUsers");
-    console.log("finished database test");
-    console.log("Calling updateUser on users[0]")
+    console.log("Result:", users);
+
+    console.log("Calling updateUser on users[0]");
     const updateUserResult = await updateUser(users[0].id, {
       name: "Newname Sogood",
       location: "Lesterville, KY"
     });
     console.log("Result:", updateUserResult);
 
+    console.log("Calling getAllPosts");
+    const posts = await getAllPosts();
+    console.log("Result:", posts);
+
+    console.log("Calling updatePost on posts[0]");
+    const updatePostResult = await updatePost(posts[0].id, {
+      title: "New Title",
+      content: "Updated Content"
+    });
+    console.log("Result:", updatePostResult);
+
+    console.log("Calling getUserById with 1");
+    const albert = await getUserById(1);
+    console.log("Result:", albert);
+
+    console.log("Finished database tests!");
   } catch (error) {
-    console.error("error testing database");
+    console.log("Error during testDB");
     throw error;
-    //   } finally {
-    //     // it's important to close out the client connection
-    //     client.end();
-    //   }
   }
 }
 
