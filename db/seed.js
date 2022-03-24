@@ -1,5 +1,6 @@
-const { client, getAllUsers, createUser } = require("./index");
+const { client, getAllUsers, createUser, updateUser } = require("./index");
 const users = require("../Database");
+
 async function dropTables() {
   try {
     console.log("starting to drop tables....");
@@ -69,6 +70,13 @@ async function testDB() {
     // for now, logging is a fine way to see what's up
     console.log(users, "getAllUsers");
     console.log("finished database test");
+    console.log("Calling updateUser on users[0]")
+    const updateUserResult = await updateUser(users[0].id, {
+      name: "Newname Sogood",
+      location: "Lesterville, KY"
+    });
+    console.log("Result:", updateUserResult);
+
   } catch (error) {
     console.error("error testing database");
     throw error;

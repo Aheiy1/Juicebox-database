@@ -1,22 +1,22 @@
 const users = [
   {
-    id: 1,
     username: "albert",
     password: "bertie99",
+    name: 'Al Bert',
     location: "Sidney, Australia",
     active: true,
   },
   {
-    id: 2,
     username: "sandra",
     password: "2sandy4me",
+    name:'Just Sandra',
     location: "Ain't tellin'",
     active: true,
   },
   {
-    id: 3,
     username: "glamgal",
     password: "soglam",
+    name:'Joshua',
     location: "Upper East Side",
     active: true,
   },
