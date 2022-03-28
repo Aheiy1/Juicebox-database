@@ -137,14 +137,10 @@ async function createUser({ username, password, name, location }) {
 
 async function createPost({ authorId, title, content, tags = [] }) {
   try {
-<<<<<<< HEAD
     console.log(authorId, title, content);
-    const {rows: [post]} = await client.query(
-=======
     const {
       rows: [post],
     } = await client.query(
->>>>>>> f3a577b25683a18246f58c6b462fea15f18d634e
       `INSERT INTO posts ("authorId", title, content)
       VALUES ($1, $2, $3)
       RETURNING *;

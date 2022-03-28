@@ -64,10 +64,7 @@ async function createInitialPosts() {
       content: "This is my first post. I Love Dogs.",
       tags: ["#happy", "#youcandoanything", "#canmandoeverything"],
     });
-<<<<<<< HEAD
     
-=======
->>>>>>> f3a577b25683a18246f58c6b462fea15f18d634e
     // a couple more
   } catch (error) {
     throw error;
