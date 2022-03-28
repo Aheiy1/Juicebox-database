@@ -12,6 +12,7 @@ const {
   createTags,
   addTagsToPost,
   getAllTags,
+  getUserByUsername
 
 } = require("./index");
 const users = require("../Database");
@@ -198,6 +199,9 @@ async function testDB() {
 
     const tags = await getAllTags();
     console.log(tags, "get all tags")
+
+    const usernamebyuser = await getUserByUsername ();
+    console.log(usernamebyuser, "username by user")
 
     console.log("Finished database tests!");
   } catch (error) {
