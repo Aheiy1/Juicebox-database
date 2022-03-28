@@ -38,13 +38,13 @@ async function createInitialUsers() {
 async function createInitialPosts() {
   try {
     const [albert, sandra, glamgal] = await getAllUsers();
-
+    console.log(albert);
     await createPost({
       authorId: albert.id,
       title: "First Post",
       content: "This is my first post. I hope I love writing blogs as much as I love writing them."
     });
-
+    
     // a couple more
   } catch (error) {
     throw error;
