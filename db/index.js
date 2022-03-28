@@ -12,7 +12,7 @@ async function getAllUsers() {
 }
 
 async function getAllTags() {
-  const rows = await client.query(`SELECT * FROM tags`);
+  const {rows} = await client.query(`SELECT * FROM tags`);
 
   return rows;
 }
@@ -123,14 +123,18 @@ async function getUserById(userId) {
 
 async function getUserByUsername(username) {
   try {
-    const {rows:[user]} = await client.query (`
+    const {
+      rows: [user],
+    } = await client.query(
+      `
     SELECT * FROM users
     WHERE username=$1;
-    `, [username]);
+    `,
+      [username]
+    );
     return user;
   } catch (error) {
     throw error;
-    
   }
 }
 
@@ -182,10 +186,11 @@ async function createTags(tagList) {
   const insertValues = tagList.map((_, index) => `$${index + 1}`).join("), (");
 
   // then we can use: (${ insertValues }) in our string template
+  console.log(insertValues, "values inserted");
 
   // need something like $1, $2, $3
   const selectValues = tagList.map((_, index) => `$${index + 1}`).join(", ");
-
+  console.log(selectValues, "values seletecd");
   // then we can use (${ selectValues }) in our string template
 
   // console.log(`
@@ -350,5 +355,5 @@ module.exports = {
   addTagsToPost,
   getPostsByTagName,
   getAllTags,
-  getUserByUsername
+  getUserByUsername,
 };
