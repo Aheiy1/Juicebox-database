@@ -1,7 +1,7 @@
 const express = require('express');
 const tagsRouter = express.Router();
 
-const getAllTags = require('../db');
+const {getAllTags} = require('../db');
 
 tagsRouter.use((req, res, next) => {
     console.log("Request to tags");

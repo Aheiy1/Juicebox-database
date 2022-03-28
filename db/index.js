@@ -11,10 +11,8 @@ async function getAllUsers() {
   return rows;
 }
 
-async function getAllTags(){
-  const rows = await client.query(
-    `SELECT * FROM tags`
-  );
+async function getAllTags() {
+  const rows = await client.query(`SELECT * FROM tags`);
 
   return rows;
 }
