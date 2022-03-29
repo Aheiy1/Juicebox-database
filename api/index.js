@@ -7,6 +7,7 @@ const { JWT_SECRET } = process.env;
 
 // set `req.user` if possible
 apiRouter.use(async (req, res, next) => {
+  console.log("Hello in middleware");
   const prefix = "Bearer ";
   const auth = req.header("Authorization");
 
@@ -19,6 +20,7 @@ apiRouter.use(async (req, res, next) => {
     try {
       const { id } = jwt.verify(token, JWT_SECRET);
 
+      console.log("ID--------->", id);
       if (id) {
         req.user = await getUserById(id);
         next();
@@ -32,6 +34,13 @@ apiRouter.use(async (req, res, next) => {
       message: `Authorization token must start with ${prefix}`,
     });
   }
+});
+apiRouter.use((req, res, next) => {
+  if (req.user) {
+    console.log("User is set:", req.user);
+  }
+
+  next();
 });
 
 const usersRouter = require("./users");
