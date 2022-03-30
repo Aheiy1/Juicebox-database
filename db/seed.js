@@ -11,6 +11,8 @@ const {
   getPostsByTagName,
   createTags,
   addTagsToPost,
+  getAllTags,
+  getUserByUsername,
 } = require("./index");
 const users = require("../Database");
 
@@ -114,7 +116,7 @@ async function createTables() {
       "authorId" INTEGER REFERENCES users(id) NOT NULL,
       title VARCHAR(255) NOT NULL,
       content TEXT NOT NULL,
-      active BOOLEAN DEFAULT true
+      active: false;
       );
 
     CREATE TABLE tags (
@@ -194,6 +196,12 @@ async function testDB() {
 
     const user = await getPostsByUser(1);
     console.log(user, "get user by id");
+
+    const usernamebyuser = await getUserByUsername();
+    console.log(usernamebyuser, "username by user");
+
+  //  const getposts = await getPostsByTagName();
+  //  console.log(getposts, "get posts by tag name")
 
     console.log("Finished database tests!");
   } catch (error) {

@@ -11,6 +11,12 @@ async function getAllUsers() {
   return rows;
 }
 
+async function getAllTags() {
+  const { rows } = await client.query(`SELECT * FROM tags`);
+
+  return rows;
+}
+
 async function getAllPosts() {
   try {
     const { rows: postIds } = await client.query(`SELECT * FROM posts`);
@@ -67,6 +73,13 @@ async function getPostById(postId) {
       [postId]
     );
 
+    if (!post) {
+      throw {
+        name: "PostError",
+        message: "Trouble finding post with that postId",
+      };
+    }
+
     const { rows: tags } = await client.query(
       `
       SELECT tags.*
@@ -113,6 +126,23 @@ async function getUserById(userId) {
     user.posts = getUserById(userId);
     return user;
   } catch (error) {}
+}
+
+async function getUserByUsername(username) {
+  try {
+    const {
+      rows: [user],
+    } = await client.query(
+      `
+    SELECT * FROM users
+    WHERE username=$1;
+    `,
+      [username]
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function createUser({ username, password, name, location }) {
@@ -164,10 +194,11 @@ async function createTags(tagList) {
   const insertValues = tagList.map((_, index) => `$${index + 1}`).join("), (");
 
   // then we can use: (${ insertValues }) in our string template
+  console.log(insertValues, "values inserted");
 
   // need something like $1, $2, $3
   const selectValues = tagList.map((_, index) => `$${index + 1}`).join(", ");
-
+  console.log(selectValues, "values seletecd");
   // then we can use (${ selectValues }) in our string template
 
   // console.log(`
@@ -331,4 +362,7 @@ module.exports = {
   createTags,
   addTagsToPost,
   getPostsByTagName,
+  getAllTags,
+  getUserByUsername,
+  getPostById,
 };
