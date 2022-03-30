@@ -12,7 +12,7 @@ async function getAllUsers() {
 }
 
 async function getAllTags() {
-  const {rows} = await client.query(`SELECT * FROM tags`);
+  const { rows } = await client.query(`SELECT * FROM tags`);
 
   return rows;
 }
@@ -356,4 +356,5 @@ module.exports = {
   getPostsByTagName,
   getAllTags,
   getUserByUsername,
+  getPostById,
 };
