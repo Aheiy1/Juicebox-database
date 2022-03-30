@@ -115,7 +115,7 @@ async function createTables() {
       "authorId" INTEGER REFERENCES users(id) NOT NULL,
       title VARCHAR(255) NOT NULL,
       content TEXT NOT NULL,
-      active BOOLEAN DEFAULT true
+      active: false;
       );
 
     CREATE TABLE tags (

@@ -73,6 +73,13 @@ async function getPostById(postId) {
       [postId]
     );
 
+    if (!post) {
+      throw {
+        name: "PostError",
+        message: "Trouble finding post with that postId",
+      };
+    }
+
     const { rows: tags } = await client.query(
       `
       SELECT tags.*
